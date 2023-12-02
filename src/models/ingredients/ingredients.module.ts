@@ -9,5 +9,6 @@ import { PaginationModule } from '../common/models/pagination/pagination.module'
   imports: [TypeOrmModule.forFeature([IngredientEntity]), PaginationModule],
   controllers: [IngredientsController],
   providers: [IngredientsService],
+  exports: [IngredientsService],
 })
 export class IngredientsModule {}

@@ -18,5 +18,6 @@ import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredie
   ],
   controllers: [RecipesController],
   providers: [RecipesService],
+  exports: [RecipesService],
 })
 export class RecipesModule {}

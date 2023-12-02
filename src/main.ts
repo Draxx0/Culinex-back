@@ -8,7 +8,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api/v1', { exclude: ['/'] });
 
-  app.enableCors();
+  app.enableCors({
+    //! Should be changed to the production URL
+    // origin: 'http://localhost:3000',
+  });
 
   app.useGlobalGuards(new RolesGuard(new Reflector()));
 

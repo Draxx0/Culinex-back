@@ -43,7 +43,26 @@ export class IngredientsService {
     });
   }
 
+  async findOneByName(name: string) {
+    return await this.ingredientRepository.findOne({
+      relations: {
+        recipes: true,
+      },
+      where: { name },
+    });
+  }
+
   async create(body: IngredientCreateDTO) {
+    const { name: ingredientName } = body;
+
+    const ingredientExists = await this.ingredientRepository.findOne({
+      where: { name: ingredientName },
+    });
+
+    if (ingredientExists) {
+      throw new Error('Ingredient already exists');
+    }
+
     const ingredient = this.ingredientRepository.create(body);
 
     return await this.ingredientRepository.save(ingredient);

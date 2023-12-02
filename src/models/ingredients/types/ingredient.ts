@@ -1,0 +1,17 @@
+export enum IngredientCategory {
+  MEAT = 'VIANDES',
+  FISH = 'POISSONS',
+  VEGETABLE = 'LÉGUMES',
+  FRUIT = 'FRUITS',
+  DAIRY = 'PRODUITS LAITIERS',
+  CEREAL = 'CÉRÉALES',
+  LEGUME = 'LÉGUMINEUSES',
+  NUT = 'FRUITS À COQUE',
+  MUSHROOM = 'CHAMPIGNONS',
+  SPICE = 'ÉPICES',
+  OIL = 'HUILES',
+  SUGAR = 'SUCRES',
+  SAUCE = 'SAUCES',
+  ALCOHOL = 'ALCOOLS',
+  OTHER = 'AUTRES',
+}

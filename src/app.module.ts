@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaginationModule } from './models/common/models/pagination/pagination.module';
 import { IngredientsDetailsModule } from './models/ingredient-details/ingredients-details.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { IngredientsDetailsModule } from './models/ingredient-details/ingredient
     IngredientsModule,
     IngredientsDetailsModule,
     PaginationModule,
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

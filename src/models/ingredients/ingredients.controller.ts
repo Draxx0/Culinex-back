@@ -7,13 +7,17 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { IngredientsService } from './ingredients.service';
 import { IngredientCreateDTO } from './dto/ingredient.create.dto';
 import { IngredientUpdateDTO } from './dto/ingredient.update.dto';
 import { IngredientQueries } from './queries/queries';
+import { Role, Roles } from 'src/decorator/role.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('ingredients')
+@UseGuards(AuthGuard)
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 
@@ -28,21 +32,25 @@ export class IngredientsController {
   }
 
   @Post()
+  @Roles(Role.ADMIN)
   async create(@Body() body: IngredientCreateDTO) {
     return await this.ingredientsService.create(body);
   }
 
   @Put(':id')
+  @Roles(Role.ADMIN)
   async update(@Param('id') id: string, @Body() body: IngredientUpdateDTO) {
     return await this.ingredientsService.update(id, body);
   }
 
   @Delete(':id')
+  @Roles(Role.ADMIN)
   async delete(@Param('id') id: string) {
     return await this.ingredientsService.delete(id);
   }
 
   @Delete()
+  @Roles(Role.ADMIN)
   async deleteAll() {
     return await this.ingredientsService.deleteAll();
   }

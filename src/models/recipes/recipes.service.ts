@@ -7,8 +7,8 @@ import { RecipeUpdateDTO } from './dto/recipe.update.dto';
 import { IngredientEntity } from '../ingredients/entities/ingredients.entity';
 import { PaginationService } from '../common/models/pagination/pagination.service';
 import { RecipesQueries } from './queries/queries';
-import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
+import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
 
 @Injectable()
 export class RecipesService {
@@ -31,6 +31,7 @@ export class RecipesService {
     const [recipes, total] = await query
       .leftJoinAndSelect('recipe.ingredients', 'ingredient')
       .leftJoinAndSelect('recipe.ingredientsDetails', 'ingredientsDetails')
+      .orderBy('recipe.title')
       .skip((page - 1) * per_page)
       .take(per_page)
       .getManyAndCount();
@@ -52,37 +53,16 @@ export class RecipesService {
     const [recipes, total] = await query
       .leftJoinAndSelect('recipe.ingredients', 'ingredient')
       .leftJoinAndSelect('recipe.ingredientsDetails', 'ingredientsDetails')
-      .where((qb) => {
-        qb.where('ingredient.name IN (:...ingredients)', {
-          ingredients: ingredients.map((ingredient) => ingredient.name),
-        })
-          .andWhere(
-            `(
-            SELECT COUNT(*)
-            FROM ingredientsDetails id
-            WHERE id.recipeId = recipe.id
-            AND id.ingredientName IN (:...ingredientNames)
-          ) = :ingredientCount`,
-            {
-              ingredientNames: ingredients.map((ingredient) => ingredient.name),
-              ingredientCount: ingredients.length,
-            },
-          )
-          .andWhere(
-            `(
-            SELECT COUNT(*)
-            FROM ingredientsDetails id
-            WHERE id.recipeId = recipe.id
-            AND id.ingredientName IN (:...ingredientNames)
-            AND id.quantity >= :quantity
-          ) = :ingredientCount`,
-            {
-              ingredientNames: ingredients.map((ingredient) => ingredient.name),
-              ingredientCount: ingredients.length,
-              quantity: body.ingredients[0].quantity,
-            },
-          );
+      .where('ingredient.name IN (:...ingredientNames)', {
+        ingredientNames: ingredients,
       })
+      .andWhere(
+        'NOT EXISTS (SELECT 1 FROM "ingredients-details" i WHERE i."recipeId" = recipe."id" AND i."ingredientName" NOT IN (:...ingredientNames))',
+        {
+          ingredientNames: ingredients,
+        },
+      )
+      .orderBy('recipe.title')
       .skip((page - 1) * per_page)
       .take(per_page)
       .getManyAndCount();
@@ -103,11 +83,12 @@ export class RecipesService {
   }
 
   async create(body: RecipeCreateDTO) {
-    const { title, difficulty, ingredients, details } = body;
+    const { title, difficulty, ingredients, details, instructions } = body;
 
     const recipe = this.recipeRepository.create({
       title,
       difficulty,
+      instructions,
     });
 
     const ingredientsEntities = await this.ingredientRepository.find({
@@ -122,10 +103,6 @@ export class RecipesService {
 
     const ingredientDetails = details.map((detail) => {
       const { ingredientName, quantity } = detail;
-
-      console.log(ingredientName, quantity);
-
-      console.log(ingredientsEntities);
 
       const ingredient = ingredientsEntities.find(
         (ingredient) =>

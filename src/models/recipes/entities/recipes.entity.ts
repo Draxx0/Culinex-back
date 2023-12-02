@@ -21,8 +21,11 @@ export class RecipeEntity extends TimestampEntity {
   @Column()
   difficulty: string;
 
-  @Column({ nullable: true })
-  instructions: string;
+  @Column({
+    type: 'text',
+    array: true,
+  })
+  instructions: string[];
 
   @Column({ nullable: true })
   image: string;

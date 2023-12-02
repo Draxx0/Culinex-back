@@ -6,7 +6,7 @@ import { IngredientsModule } from './models/ingredients/ingredients.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PaginationModule } from './models/common/models/pagination/pagination.module';
-import { IngredientsDetailsModue } from './models/ingredient-details/ingredients-details.module';
+import { IngredientsDetailsModule } from './models/ingredient-details/ingredients-details.module';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { IngredientsDetailsModue } from './models/ingredient-details/ingredients
     }),
     RecipesModule,
     IngredientsModule,
-    IngredientsDetailsModue,
+    IngredientsDetailsModule,
     PaginationModule,
   ],
   controllers: [AppController],

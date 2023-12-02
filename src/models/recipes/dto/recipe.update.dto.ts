@@ -11,8 +11,8 @@ export class RecipeUpdateDTO {
   difficulty?: 'easy' | 'medium' | 'hard';
 
   @IsOptional()
-  @IsString()
-  instructions?: string;
+  @IsArray()
+  instructions?: string[];
 
   @IsOptional()
   @IsArray()

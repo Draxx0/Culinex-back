@@ -9,4 +9,4 @@ import { IngredientsDetailEntity } from './entities/ingredients-details.entity';
   controllers: [IngredientsDetailsController],
   providers: [IngredientsDetailsService],
 })
-export class IngredientsDetailsModue {}
+export class IngredientsDetailsModule {}

@@ -14,9 +14,9 @@ export class RecipeCreateDTO {
   @IsNotEmpty()
   ingredients: string[];
 
-  @IsString()
+  @IsArray()
   @IsNotEmpty()
-  instructions: string;
+  instructions: string[];
 
   @IsArray()
   @IsNotEmpty()

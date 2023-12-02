@@ -10,7 +10,7 @@ import {
   OneToMany,
 } from 'typeorm';
 
-@Entity('recipe-entity')
+@Entity('recipe')
 export class RecipeEntity extends TimestampEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;

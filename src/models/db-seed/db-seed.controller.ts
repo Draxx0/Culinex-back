@@ -10,6 +10,11 @@ export class DbSeedController {
     return await this.dbSeedService.generateIngredients();
   }
 
+  @Get('generate-ingredients-category')
+  async generateIngredientsCategory() {
+    return await this.dbSeedService.generateIngredientsCategory();
+  }
+
   @Get('generate-recipes')
   async generateRecipes() {
     return await this.dbSeedService.generateRecipes();

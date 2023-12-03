@@ -9,17 +9,32 @@ import {
   JoinTable,
   OneToMany,
 } from 'typeorm';
+import { RecipeType } from '../types/recipes';
 
 @Entity('recipe')
 export class RecipeEntity extends TimestampEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({
+    unique: true,
+  })
   title: string;
 
   @Column()
-  difficulty: string;
+  description: string;
+
+  @Column({
+    type: 'text',
+    enum: ['Facile', 'Moyen', 'Difficile'],
+  })
+  difficulty: 'Facile' | 'Moyen' | 'Difficile';
+
+  @Column({
+    type: 'text',
+    enum: ['Apéritif', 'Entrée', 'Plat', 'Dessert', 'Boisson', 'Autre'],
+  })
+  type: RecipeType;
 
   @Column({
     type: 'text',

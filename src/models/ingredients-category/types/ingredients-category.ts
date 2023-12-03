@@ -20,4 +20,7 @@ export type IngredientCategory =
   | 'Légumineuses'
   | 'Chocolat'
   | 'Fromages'
+  | 'Fruits à Coques'
+  | 'Fruits Secs'
+  | 'Boissons Alcoolisées'
   | 'Produits Fermentés';

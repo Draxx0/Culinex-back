@@ -23,9 +23,15 @@ export class IngredientEntity extends TimestampEntity {
   @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients)
   recipes: RecipeEntity[];
 
-  @Column()
+  @Column({ nullable: true })
   categoryId: string;
 
-  @ManyToOne(() => IngredientCategoryEntity, (category) => category.ingredients)
+  @ManyToOne(
+    () => IngredientCategoryEntity,
+    (category) => category.ingredients,
+    {
+      onDelete: 'SET NULL',
+    },
+  )
   category: IngredientCategoryEntity;
 }

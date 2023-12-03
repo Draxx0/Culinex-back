@@ -1,4 +1,5 @@
 import { IsArray, IsIn, IsOptional, IsString } from 'class-validator';
+import { RecipeDifficulty, RecipeType } from '../types/recipes';
 
 export class RecipeUpdateDTO {
   @IsOptional()
@@ -7,8 +8,17 @@ export class RecipeUpdateDTO {
 
   @IsOptional()
   @IsString()
-  @IsIn(['easy', 'medium', 'hard'])
-  difficulty?: 'easy' | 'medium' | 'hard';
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['Apéritif', 'Entrée', 'Plat', 'Dessert', 'Boisson', 'Autre'])
+  type?: RecipeType;
+
+  @IsOptional()
+  @IsString()
+  @IsIn(['Facile', 'Moyen', 'Difficile'])
+  difficulty?: RecipeDifficulty;
 
   @IsOptional()
   @IsArray()

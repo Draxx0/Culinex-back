@@ -4,6 +4,7 @@ import { RecipesService } from '../recipes/recipes.service';
 import { ingredientsSeed } from './data/ingredients.seed';
 import { IngredientsCategoryService } from '../ingredients-category/ingredients-category.service';
 import { categoriesSeed } from './data/categories.seed';
+import { recipesSeed } from './data/recipes.seed';
 
 @Injectable()
 export class DbSeedService {
@@ -48,6 +49,9 @@ export class DbSeedService {
 
           continue;
         }
+
+        console.log('ingredientExists', ingredientExists);
+        console.log('category found', IngredientCategoryExists);
 
         if (
           ingredientExists &&
@@ -98,6 +102,30 @@ export class DbSeedService {
   }
 
   async generateRecipes() {
-    return 'generateRecipes';
+    let generatedCount = 0;
+    let status: string;
+    for (const recipe of recipesSeed) {
+      try {
+        const recipeExists = await this.recipesService.findOneByTitle(
+          recipe.title,
+        );
+        if (recipeExists) {
+          continue;
+        }
+        await this.recipesService.create(recipe);
+        generatedCount++;
+      } catch (error) {
+        status = 'error';
+        throw new Error(error);
+      }
+    }
+
+    status = 'success';
+
+    return {
+      status,
+      message: status === 'success' ? 'Recipes generated' : 'Error occurred',
+      totalGenerated: generatedCount,
+    };
   }
 }

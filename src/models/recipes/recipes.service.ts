@@ -75,6 +75,13 @@ export class RecipesService {
     );
   }
 
+  async findOneByTitle(title: string) {
+    return await this.recipeRepository.findOne({
+      where: { title },
+      relations: ['ingredients', 'ingredientsDetails'],
+    });
+  }
+
   async findOne(id: string) {
     return await this.recipeRepository.findOneOrFail({
       where: { id },
@@ -83,11 +90,21 @@ export class RecipesService {
   }
 
   async create(body: RecipeCreateDTO) {
-    const { title, difficulty, ingredients, details, instructions } = body;
+    const {
+      title,
+      difficulty,
+      ingredients,
+      details,
+      instructions,
+      description,
+      type,
+    } = body;
 
     const recipe = this.recipeRepository.create({
       title,
       difficulty,
+      description,
+      type,
       instructions,
     });
 

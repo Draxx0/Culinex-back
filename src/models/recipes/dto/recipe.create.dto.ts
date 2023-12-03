@@ -1,4 +1,5 @@
 import { IsArray, IsIn, IsNotEmpty, IsString } from 'class-validator';
+import { RecipeDifficulty, RecipeType } from '../types/recipes';
 
 export class RecipeCreateDTO {
   @IsString()
@@ -7,8 +8,17 @@ export class RecipeCreateDTO {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['easy', 'medium', 'hard'])
-  difficulty: 'easy' | 'medium' | 'hard';
+  description: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(['Apéritif', 'Entrée', 'Plat', 'Dessert', 'Boisson', 'Autre'])
+  type: RecipeType;
+
+  @IsString()
+  @IsNotEmpty()
+  @IsIn(['Facile', 'Moyen', 'Difficile'])
+  difficulty: RecipeDifficulty;
 
   @IsArray()
   @IsNotEmpty()

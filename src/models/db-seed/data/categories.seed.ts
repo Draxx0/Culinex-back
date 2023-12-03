@@ -71,4 +71,13 @@ export const categoriesSeed: Array<Category> = [
   {
     name: 'Produits Fermentés',
   },
+  {
+    name: 'Fruits à Coques',
+  },
+  {
+    name: 'Fruits Secs',
+  },
+  {
+    name: 'Boissons Alcoolisées',
+  },
 ];

@@ -8,6 +8,7 @@ import { IngredientsDetailsModule } from './models/ingredient-details/ingredient
 import { AuthenticationModule } from './authentication/authentication.module';
 import { PostgresModule } from './database/postgres.module';
 import { DbSeedModule } from './models/db-seed/db-seed.module';
+import { IngredientsCategoryModule } from './models/ingredients-category/ingredients-category.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { DbSeedModule } from './models/db-seed/db-seed.module';
     RecipesModule,
     IngredientsModule,
     IngredientsDetailsModule,
+    IngredientsCategoryModule,
     PaginationModule,
     AuthenticationModule,
     process.env.NODE_ENV === 'development' && DbSeedModule,

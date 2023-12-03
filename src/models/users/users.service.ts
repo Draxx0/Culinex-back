@@ -2,8 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from './entities/users.entity';
 import { Repository } from 'typeorm';
-import { createUserDTO } from './dto/user.create.dto';
 import * as bcrypt from 'bcryptjs';
+import { UpdateUserDTO } from './dto/user.update.dto';
+import { AppReturnObject } from 'src/common/types';
+import { Role } from 'src/decorator/role.decorator';
 
 @Injectable()
 export class UsersService {
@@ -22,14 +24,43 @@ export class UsersService {
     return user;
   }
 
-  async createUser(body: createUserDTO): Promise<UserEntity> {
+  async updateUser(id: string, body: UpdateUserDTO): Promise<UserEntity> {
+    const { email, password, username } = body;
     try {
-      const hashedPassword = await bcrypt.hash(body.password, 10);
-      body.password = hashedPassword;
-      const createdUser = this.userRepository.create(body);
-      return await this.userRepository.save(createdUser);
+      if (password) {
+        const hashedPassword = await bcrypt.hash(body.password, 10);
+        body.password = hashedPassword;
+      }
+      if (email) {
+        const user = await this.userRepository.findOneBy({ email });
+        if (user) {
+          throw new Error('Email already exists');
+        }
+      }
+      if (username) {
+        const user = await this.userRepository.findOneBy({ username });
+        if (user) {
+          throw new Error('Username already exists');
+        }
+      }
+      await this.userRepository.update(id, body);
+
+      return await this.userRepository.findOneBy({ id });
     } catch (error) {
-      throw new Error('Error while creating user');
+      throw new Error('Error while updating user');
+    }
+  }
+
+  async updateUserRole(id: string, role: Role): Promise<AppReturnObject> {
+    try {
+      await this.userRepository.update(id, { role });
+
+      return {
+        status: 200,
+        message: `User role updated to ${role}`,
+      };
+    } catch (error) {
+      throw new Error('Error while updating user role');
     }
   }
 

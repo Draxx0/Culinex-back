@@ -4,11 +4,12 @@ import { IngredientsController } from './ingredients.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IngredientEntity } from './entities/ingredients.entity';
 import { PaginationModule } from '../common/models/pagination/pagination.module';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Module({
   imports: [TypeOrmModule.forFeature([IngredientEntity]), PaginationModule],
   controllers: [IngredientsController],
-  providers: [IngredientsService],
+  providers: [IngredientsService, AuthGuard],
   exports: [IngredientsService],
 })
 export class IngredientsModule {}

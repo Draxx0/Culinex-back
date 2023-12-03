@@ -15,9 +15,10 @@ import { IngredientUpdateDTO } from './dto/ingredient.update.dto';
 import { IngredientQueries } from './queries/queries';
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('ingredients')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class IngredientsController {
   constructor(private readonly ingredientsService: IngredientsService) {}
 

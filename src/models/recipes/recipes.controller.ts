@@ -16,9 +16,10 @@ import { RecipesQueries } from './queries/queries';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('recipes')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 

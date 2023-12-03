@@ -1,29 +1,33 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { UserEntity } from './entities/users.entity';
-import { createUserDTO } from './dto/user.create.dto';
-import { TokenObject } from 'src/authentication/types/authentication';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthenticationService } from 'src/authentication/authentication.service';
+import { TokenObject } from 'src/authentication/types/authentication';
+import { AppReturnObject } from 'src/common/types';
+import { Role, Roles } from 'src/decorator/role.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { DeleteResult } from 'typeorm';
+import { UserEntity } from './entities/users.entity';
+import { UsersService } from './users.service';
+import { SignupDTO } from 'src/authentication/dto/auth.dto';
 
 @Controller('users')
+@UseGuards(AuthGuard, RolesGuard)
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
-    private readonly authService: AuthenticationService,
+    private readonly authenticationService: AuthenticationService,
   ) {}
-  @Post()
-  async createUser(@Body() body: createUserDTO): Promise<TokenObject> {
-    const { password: pass, email } = body;
-    await this.userService.createUser(body);
-
-    return await this.authService.login({
-      email,
-      pass,
-    });
-  }
 
   @Get()
+  @Roles(Role.ADMIN)
   async getUsers(): Promise<Array<UserEntity>> {
     return await this.userService.getUsers();
   }
@@ -31,5 +35,27 @@ export class UsersController {
   @Delete(':id')
   deleteOrder(@Param('id') id: string): Promise<DeleteResult> {
     return this.userService.deleteUser(id);
+  }
+
+  @Put(':id')
+  async updateUser(
+    @Param('id') id: string,
+    @Body() body: SignupDTO,
+  ): Promise<TokenObject> {
+    const updatedUser = await this.userService.updateUser(id, body);
+
+    return await this.authenticationService.login({
+      email: updatedUser.email,
+      pass: updatedUser.password,
+    });
+  }
+
+  @Put('admin-endpoint/role/:id')
+  @Roles(Role.ADMIN)
+  async updateUserRole(
+    @Param('id') id: string,
+    @Body() body: { role: Role },
+  ): Promise<AppReturnObject> {
+    return await this.userService.updateUserRole(id, body.role);
   }
 }

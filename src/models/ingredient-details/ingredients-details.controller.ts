@@ -2,9 +2,10 @@ import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { IngredientsDetailsService } from './ingredients-details.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Role, Roles } from 'src/decorator/role.decorator';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('ingredients-details')
-@UseGuards(AuthGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class IngredientsDetailsController {
   constructor(
     private readonly ingredientsDetailsService: IngredientsDetailsService,

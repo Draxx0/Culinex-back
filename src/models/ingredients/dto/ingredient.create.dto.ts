@@ -1,5 +1,4 @@
-import { IsIn, IsNotEmpty, IsString } from 'class-validator';
-import { IngredientCategory } from '../types/ingredient';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export class IngredientCreateDTO {
   @IsString()
@@ -7,23 +6,6 @@ export class IngredientCreateDTO {
   name: string;
 
   @IsString()
-  @IsIn([
-    IngredientCategory.MEAT,
-    IngredientCategory.FISH,
-    IngredientCategory.VEGETABLE,
-    IngredientCategory.FRUIT,
-    IngredientCategory.DAIRY,
-    IngredientCategory.CEREAL,
-    IngredientCategory.LEGUME,
-    IngredientCategory.NUT,
-    IngredientCategory.MUSHROOM,
-    IngredientCategory.SPICE,
-    IngredientCategory.OIL,
-    IngredientCategory.SUGAR,
-    IngredientCategory.SAUCE,
-    IngredientCategory.ALCOHOL,
-    IngredientCategory.OTHER,
-  ])
   @IsNotEmpty()
-  category: string;
+  categoryId: string;
 }

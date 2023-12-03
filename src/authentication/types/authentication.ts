@@ -5,6 +5,7 @@ export interface TokenObject {
   user: {
     username: string;
     email: string;
+    sub: string;
     id: string;
     role: Role;
   };

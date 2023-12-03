@@ -1,7 +1,13 @@
 import { TimestampEntity } from 'src/models/common/entities/timestamp.entity';
 import { RecipeEntity } from 'src/models/recipes/entities/recipes.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { IngredientCategory } from '../types/ingredient';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  ManyToOne,
+} from 'typeorm';
+import { IngredientCategoryEntity } from 'src/models/ingredients-category/entities/ingredients-category.entity';
 
 @Entity('ingredient')
 export class IngredientEntity extends TimestampEntity {
@@ -14,9 +20,12 @@ export class IngredientEntity extends TimestampEntity {
   @Column({ nullable: true })
   image_url: string;
 
-  @Column({ nullable: true })
-  category: IngredientCategory;
-
   @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients)
   recipes: RecipeEntity[];
+
+  @Column()
+  categoryId: string;
+
+  @ManyToOne(() => IngredientCategoryEntity, (category) => category.ingredients)
+  category: IngredientCategoryEntity;
 }

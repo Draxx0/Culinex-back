@@ -27,7 +27,7 @@ export class UsersController {
   ) {}
 
   @Get()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async getUsers(): Promise<Array<UserEntity>> {
     return await this.userService.getUsers();
   }
@@ -51,7 +51,7 @@ export class UsersController {
   }
 
   @Put('admin-endpoint/role/:id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async updateUserRole(
     @Param('id') id: string,
     @Body() body: { role: Role },

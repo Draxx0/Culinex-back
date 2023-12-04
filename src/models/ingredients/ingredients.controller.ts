@@ -33,25 +33,25 @@ export class IngredientsController {
   }
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async create(@Body() body: IngredientCreateDTO) {
     return await this.ingredientsService.create(body);
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async update(@Param('id') id: string, @Body() body: IngredientUpdateDTO) {
     return await this.ingredientsService.update(id, body);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async delete(@Param('id') id: string) {
     return await this.ingredientsService.delete(id);
   }
 
   @Delete()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async deleteAll() {
     return await this.ingredientsService.deleteAll();
   }

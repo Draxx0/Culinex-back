@@ -7,6 +7,7 @@ import {
   Post,
   Put,
   Query,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
@@ -42,25 +43,25 @@ export class RecipesController {
   }
 
   @Post()
-  @Roles(Role.ADMIN)
-  async create(@Body() body: RecipeCreateDTO) {
-    return await this.recipesService.create(body);
+  @Roles([Role.ADMIN, Role.CONTRIBUTOR])
+  async create(@Request() req: any, @Body() body: RecipeCreateDTO) {
+    return await this.recipesService.create(req, body);
   }
 
   @Put(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN, Role.CONTRIBUTOR])
   async update(@Param('id') id: string, @Body() body: RecipeUpdateDTO) {
     return await this.recipesService.update(id, body);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN, Role.CONTRIBUTOR])
   async delete(@Param('id') id: string) {
     return await this.recipesService.delete(id);
   }
 
   @Delete()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async deleteAll() {
     return await this.recipesService.deleteAll();
   }

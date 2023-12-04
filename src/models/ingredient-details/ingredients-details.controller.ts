@@ -17,13 +17,13 @@ export class IngredientsDetailsController {
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async delete(@Param('id') id: string) {
     return await this.ingredientsDetailsService.delete(id);
   }
 
   @Delete()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async deleteAll() {
     return await this.ingredientsDetailsService.deleteAll();
   }

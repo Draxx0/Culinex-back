@@ -26,19 +26,19 @@ export class IngredientsCategoryController {
   }
 
   @Post()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async create(@Body() body: CreateCategoryDTO) {
     return await this.ingredientsCategoryService.create(body);
   }
 
   @Delete(':id')
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async delete(@Param('id') id: string) {
     return await this.ingredientsCategoryService.delete(id);
   }
 
   @Delete()
-  @Roles(Role.ADMIN)
+  @Roles([Role.ADMIN])
   async deleteAll() {
     return await this.ingredientsCategoryService.deleteAll();
   }

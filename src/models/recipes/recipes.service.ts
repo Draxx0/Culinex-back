@@ -9,6 +9,7 @@ import { PaginationService } from '../common/models/pagination/pagination.servic
 import { RecipesQueries } from './queries/queries';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class RecipesService {
@@ -19,6 +20,8 @@ export class RecipesService {
     private readonly ingredientRepository: Repository<IngredientEntity>,
     @InjectRepository(IngredientsDetailEntity)
     private readonly ingredientsDetailsRepository: Repository<IngredientsDetailEntity>,
+    @Inject(UsersService)
+    private readonly usersService: UsersService,
     @Inject(PaginationService)
     private readonly paginationService: PaginationService,
   ) {}
@@ -89,7 +92,7 @@ export class RecipesService {
     });
   }
 
-  async create(body: RecipeCreateDTO) {
+  async create(request: any, body: RecipeCreateDTO) {
     const {
       title,
       difficulty,
@@ -100,12 +103,21 @@ export class RecipesService {
       type,
     } = body;
 
+    const { user: userFromRequest } = request;
+
+    const user = await this.usersService.findOne(userFromRequest.email);
+
+    if (!user) {
+      throw new NotFoundException("L'utilisateur n'existe pas.");
+    }
+
     const recipe = this.recipeRepository.create({
       title,
       difficulty,
       description,
       type,
       instructions,
+      user,
     });
 
     const ingredientsEntities = await this.ingredientRepository.find({

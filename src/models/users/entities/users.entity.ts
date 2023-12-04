@@ -1,5 +1,6 @@
 import { Role } from 'src/decorator/role.decorator';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { RecipeEntity } from 'src/models/recipes/entities/recipes.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('user')
 export class UserEntity {
@@ -17,4 +18,9 @@ export class UserEntity {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @OneToMany(() => RecipeEntity, (recipe) => recipe.user, {
+    eager: true,
+  })
+  recipes: RecipeEntity[];
 }

@@ -6,6 +6,7 @@ import { RecipeEntity } from './entities/recipes.entity';
 import { IngredientEntity } from '../ingredients/entities/ingredients.entity';
 import { PaginationModule } from '../common/models/pagination/pagination.module';
 import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredie
       IngredientEntity,
       IngredientsDetailEntity,
     ]),
+    UsersModule,
     PaginationModule,
   ],
   controllers: [RecipesController],

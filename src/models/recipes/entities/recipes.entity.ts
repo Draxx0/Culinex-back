@@ -8,8 +8,10 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
+  ManyToOne,
 } from 'typeorm';
 import { RecipeType } from '../types/recipes';
+import { UserEntity } from 'src/models/users/entities/users.entity';
 
 @Entity('recipe')
 export class RecipeEntity extends TimestampEntity {
@@ -44,6 +46,9 @@ export class RecipeEntity extends TimestampEntity {
 
   @Column({ nullable: true })
   image: string;
+
+  @ManyToOne(() => UserEntity, (user) => user.recipes)
+  user: UserEntity;
 
   @ManyToMany(() => IngredientEntity, (ingredient) => ingredient.recipes, {
     eager: true,

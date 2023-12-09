@@ -17,12 +17,25 @@ export class IngredientsService {
   ) {}
 
   async findAll(queries: IngredientQueries) {
-    const { per_page = 10, page = 1 } = queries;
+    const {
+      per_page = 10,
+      page = 1,
+      search,
+      sort_by = 'created_at',
+      sort_order = 'DESC',
+    } = queries;
     const query = this.ingredientRepository.createQueryBuilder('ingredient');
+
+    if (search) {
+      query.where('ingredient.name ILIKE :search', {
+        search: `%${search}%`,
+      });
+    }
 
     const [ingredients, total] = await query
       .leftJoinAndSelect('ingredient.recipes', 'recipe')
       .skip((page - 1) * per_page)
+      .orderBy(`ingredient.${sort_by}`, sort_order)
       .take(per_page)
       .getManyAndCount();
 

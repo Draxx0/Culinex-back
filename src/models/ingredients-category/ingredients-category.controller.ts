@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { IngredientsCategoryService } from './ingredients-category.service';
@@ -12,6 +13,7 @@ import { CreateCategoryDTO } from './dto/ingredients-category.create.dto';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { IngredientsCategoryQueries } from './queries/queries';
 
 @Controller('ingredients-category')
 @UseGuards(AuthGuard, RolesGuard)
@@ -21,8 +23,8 @@ export class IngredientsCategoryController {
   ) {}
 
   @Get()
-  async findAll() {
-    return await this.ingredientsCategoryService.findAll();
+  async findAll(@Query() queries: IngredientsCategoryQueries) {
+    return await this.ingredientsCategoryService.findAll(queries);
   }
 
   @Post()

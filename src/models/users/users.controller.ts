@@ -41,11 +41,13 @@ export class UsersController {
   }
 
   @Delete(':id')
+  @Author(AuthorBy.USER_ID)
   deleteOrder(@Param('id') id: string): Promise<DeleteResult> {
     return this.userService.deleteUser(id);
   }
 
   @Put(':id')
+  @Author(AuthorBy.USER_ID)
   async updateUser(
     @Param('id') id: string,
     @Body() body: SignupDTO,

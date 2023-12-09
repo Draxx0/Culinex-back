@@ -40,7 +40,6 @@ export class RecipesController {
   }
 
   @Get(':id')
-  @Author(AuthorBy.RECIPE)
   async findOne(@Param('id') id: string) {
     return await this.recipesService.findOne(id);
   }

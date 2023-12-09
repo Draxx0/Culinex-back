@@ -18,7 +18,8 @@ export class DbSeedService {
   ) {}
 
   async generateIngredients() {
-    let generatedCount = 0;
+    let ingredientsGeneratedCount = 0;
+    let categoriesGeneratedCount = 0;
     let status: string;
     for (const ingredient of ingredientsSeed) {
       try {
@@ -32,46 +33,33 @@ export class DbSeedService {
           );
 
         if (!IngredientCategoryExists) {
-          console.log(
-            'category not found, creating for ingredient',
-            ingredient,
-          );
           const newCategory = await this.ingredientsCategoryService.create({
             name: ingredient.categoryName,
           });
+
+          categoriesGeneratedCount++;
 
           await this.ingredientsService.create({
             ...ingredient,
             categoryId: newCategory.id,
           });
 
-          generatedCount++;
+          ingredientsGeneratedCount++;
 
           continue;
         }
-
-        console.log('ingredientExists', ingredientExists);
-        console.log('category found', IngredientCategoryExists);
 
         if (
           ingredientExists &&
           ingredientExists.categoryId === IngredientCategoryExists.id
         ) {
-          console.log('ingredientExists & category already exist');
           continue;
         }
-
-        console.log(
-          'about to create ingredient',
-          ingredient,
-          'with existing category',
-          IngredientCategoryExists,
-        );
         await this.ingredientsService.create({
           ...ingredient,
           categoryId: IngredientCategoryExists.id,
         });
-        generatedCount++;
+        ingredientsGeneratedCount++;
       } catch (error) {
         status = 'error';
         throw new Error(error);
@@ -82,7 +70,10 @@ export class DbSeedService {
       status,
       message:
         status === 'success' ? 'Ingredients generated' : 'Error occurred',
-      totalGenerated: generatedCount,
+      totalGenerated: {
+        ingredients: ingredientsGeneratedCount,
+        categories: categoriesGeneratedCount,
+      },
     };
   }
 
@@ -109,6 +100,7 @@ export class DbSeedService {
         const recipeExists = await this.recipesService.findOneByTitle(
           recipe.title,
         );
+        console.log('recipeExists', recipeExists);
         if (recipeExists) {
           continue;
         }

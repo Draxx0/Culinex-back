@@ -18,9 +18,11 @@ import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthorGuard } from 'src/guards/author.guard';
+import { Author, AuthorBy } from 'src/decorator/author.decorator';
 
 @Controller('recipes')
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(AuthGuard, RolesGuard, AuthorGuard)
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 
@@ -38,6 +40,7 @@ export class RecipesController {
   }
 
   @Get(':id')
+  @Author(AuthorBy.RECIPE)
   async findOne(@Param('id') id: string) {
     return await this.recipesService.findOne(id);
   }
@@ -50,12 +53,14 @@ export class RecipesController {
 
   @Put(':id')
   @Roles([Role.ADMIN, Role.CONTRIBUTOR])
+  @Author(AuthorBy.RECIPE)
   async update(@Param('id') id: string, @Body() body: RecipeUpdateDTO) {
     return await this.recipesService.update(id, body);
   }
 
   @Delete(':id')
   @Roles([Role.ADMIN, Role.CONTRIBUTOR])
+  @Author(AuthorBy.RECIPE)
   async delete(@Param('id') id: string) {
     return await this.recipesService.delete(id);
   }

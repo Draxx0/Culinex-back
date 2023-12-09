@@ -24,7 +24,7 @@ export class AuthenticationService {
     email: string;
     pass: string;
   }): Promise<TokenObject> {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.findOneByEmail(email);
 
     const isPasswordMatching = await bcrypt.compare(pass, user.password);
 

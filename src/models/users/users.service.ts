@@ -14,7 +14,7 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findOne(email: string): Promise<UserEntity | undefined> {
+  async findOneByEmail(email: string): Promise<UserEntity | undefined> {
     const user = await this.userRepository.findOneBy({ email });
 
     if (!user) {
@@ -22,6 +22,14 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async findOne(id: string): Promise<UserEntity> {
+    try {
+      return await this.userRepository.findOneBy({ id });
+    } catch (error) {
+      throw new Error('User not found');
+    }
   }
 
   async updateUser(id: string, body: UpdateUserDTO): Promise<UserEntity> {

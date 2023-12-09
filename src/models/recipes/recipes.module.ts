@@ -4,8 +4,8 @@ import { RecipesController } from './recipes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecipeEntity } from './entities/recipes.entity';
 import { IngredientEntity } from '../ingredients/entities/ingredients.entity';
-import { PaginationModule } from '../common/models/pagination/pagination.module';
 import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
+import { PaginationModule } from '../common/models/pagination/pagination.module';
 import { UsersModule } from '../users/users.module';
 
 @Module({
@@ -15,8 +15,8 @@ import { UsersModule } from '../users/users.module';
       IngredientEntity,
       IngredientsDetailEntity,
     ]),
-    UsersModule,
     PaginationModule,
+    UsersModule,
   ],
   controllers: [RecipesController],
   providers: [RecipesService],

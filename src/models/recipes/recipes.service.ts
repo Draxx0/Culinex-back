@@ -105,7 +105,7 @@ export class RecipesService {
 
     const { user: userFromRequest } = request;
 
-    const user = await this.usersService.findOne(userFromRequest.email);
+    const user = await this.usersService.findOneByEmail(userFromRequest.email);
 
     if (!user) {
       throw new NotFoundException("L'utilisateur n'existe pas.");
@@ -117,6 +117,7 @@ export class RecipesService {
       description,
       type,
       instructions,
+      userId: user.id,
       user,
     });
 

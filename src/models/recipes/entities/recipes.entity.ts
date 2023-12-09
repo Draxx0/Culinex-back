@@ -47,6 +47,9 @@ export class RecipeEntity extends TimestampEntity {
   @Column({ nullable: true })
   image: string;
 
+  @Column({ nullable: true })
+  userId: string;
+
   @ManyToOne(() => UserEntity, (user) => user.recipes)
   user: UserEntity;
 

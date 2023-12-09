@@ -17,9 +17,11 @@ import { DeleteResult } from 'typeorm';
 import { UserEntity } from './entities/users.entity';
 import { UsersService } from './users.service';
 import { SignupDTO } from 'src/authentication/dto/auth.dto';
+import { AuthorGuard } from 'src/guards/author.guard';
+import { Author, AuthorBy } from 'src/decorator/author.decorator';
 
 @Controller('users')
-@UseGuards(AuthGuard, RolesGuard)
+@UseGuards(AuthGuard, RolesGuard, AuthorGuard)
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
@@ -30,6 +32,12 @@ export class UsersController {
   @Roles([Role.ADMIN])
   async getUsers(): Promise<Array<UserEntity>> {
     return await this.userService.getUsers();
+  }
+
+  @Get(':id')
+  @Author(AuthorBy.USER_ID)
+  async getUser(@Param('id') id: string): Promise<UserEntity> {
+    return await this.userService.findOne(id);
   }
 
   @Delete(':id')
@@ -51,7 +59,7 @@ export class UsersController {
   }
 
   @Put('admin-endpoint/role/:id')
-  @Roles([Role.ADMIN])
+  // @Roles([Role.ADMIN])
   async updateUserRole(
     @Param('id') id: string,
     @Body() body: { role: Role },

@@ -27,14 +27,29 @@ export class RecipesService {
   ) {}
 
   async findAll(queries: RecipesQueries) {
-    const { per_page = 10, page = 1 } = queries;
+    const {
+      per_page = 10,
+      page = 1,
+      search,
+      sort_by = 'created_at',
+      sort_order = 'DESC',
+    } = queries;
 
     const query = this.recipeRepository.createQueryBuilder('recipe');
+
+    if (search) {
+      query.where(
+        'recipe.title ILIKE :search OR recipe.description ILIKE :search',
+        {
+          search: `%${search}%`,
+        },
+      );
+    }
 
     const [recipes, total] = await query
       .leftJoinAndSelect('recipe.ingredients', 'ingredient')
       .leftJoinAndSelect('recipe.ingredientsDetails', 'ingredientsDetails')
-      .orderBy('recipe.title')
+      .orderBy(`recipe.${sort_by}`, sort_order)
       .skip((page - 1) * per_page)
       .take(per_page)
       .getManyAndCount();
@@ -48,7 +63,12 @@ export class RecipesService {
   }
 
   async findRecipesByIngredients(body: GetRecipesDTO, queries: RecipesQueries) {
-    const { per_page = 10, page = 1 } = queries;
+    const {
+      per_page = 10,
+      page = 1,
+      sort_by = 'created_at',
+      sort_order = 'DESC',
+    } = queries;
     const { ingredients } = body;
 
     const query = this.recipeRepository.createQueryBuilder('recipe');
@@ -65,7 +85,7 @@ export class RecipesService {
           ingredientNames: ingredients,
         },
       )
-      .orderBy('recipe.title')
+      .orderBy(`recipe.${sort_by}`, sort_order)
       .skip((page - 1) * per_page)
       .take(per_page)
       .getManyAndCount();

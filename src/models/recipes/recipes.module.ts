@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { RecipesService } from './recipes.service';
-import { RecipesController } from './recipes.controller';
+import { RecipesController } from './types/recipes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { RecipeEntity } from './entities/recipes.entity';
 import { IngredientEntity } from '../ingredients/entities/ingredients.entity';

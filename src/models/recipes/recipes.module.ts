@@ -7,6 +7,8 @@ import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredie
 import { PaginationModule } from '../common/models/pagination/pagination.module';
 import { UsersModule } from '../users/users.module';
 import { RecipesController } from './recipes.controller';
+import { RecipesCommentModule } from '../recipes-comment/recipes-comment.module';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -17,6 +19,8 @@ import { RecipesController } from './recipes.controller';
     ]),
     PaginationModule,
     UsersModule,
+    RecipesCommentModule,
+    HttpModule,
   ],
   controllers: [RecipesController],
   providers: [RecipesService],

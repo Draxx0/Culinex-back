@@ -16,6 +16,8 @@ export class AuthorGuard implements CanActivate {
       context.getHandler(),
     );
 
+    console.log('authorBy', authorBy);
+
     if (!authorBy) {
       return true;
     }

@@ -17,3 +17,8 @@ services:
     environment:
       ADMINER_DEFAULT_SERVER: db
       ADMINER_DESIGN: pepa-linha
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - '6379:6379'

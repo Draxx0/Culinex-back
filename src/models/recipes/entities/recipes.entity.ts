@@ -17,6 +17,7 @@ import {
   RecipeType,
 } from '../types/recipes';
 import { UserEntity } from 'src/models/users/entities/users.entity';
+import { RecipesCommentEntity } from 'src/models/recipes-comment/entities/recipes-comment.entity';
 
 @Entity('recipe')
 export class RecipeEntity extends TimestampEntity {
@@ -79,6 +80,11 @@ export class RecipeEntity extends TimestampEntity {
   })
   @JoinTable()
   ingredients: IngredientEntity[];
+
+  @ManyToOne(() => RecipesCommentEntity, (comment) => comment.recipe, {
+    eager: true,
+  })
+  comments: RecipesCommentEntity[];
 
   @OneToMany(
     () => IngredientsDetailEntity,

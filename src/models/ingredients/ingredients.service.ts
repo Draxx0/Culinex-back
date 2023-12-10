@@ -21,7 +21,7 @@ export class IngredientsService {
       per_page = 10,
       page = 1,
       search,
-      sort_by = 'created_at',
+      sort_by = 'createdAt',
       sort_order = 'DESC',
     } = queries;
     const query = this.ingredientRepository.createQueryBuilder('ingredient');

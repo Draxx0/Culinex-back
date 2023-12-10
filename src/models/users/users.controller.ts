@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Put,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticationService } from 'src/authentication/authentication.service';
@@ -32,6 +33,11 @@ export class UsersController {
   @Roles([Role.ADMIN])
   async getUsers(): Promise<Array<UserEntity>> {
     return await this.userService.getUsers();
+  }
+
+  @Get('current')
+  getCurrentUserConnected(@Request() req) {
+    return req.user;
   }
 
   @Get(':id')

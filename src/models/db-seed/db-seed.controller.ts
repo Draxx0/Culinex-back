@@ -1,4 +1,4 @@
-import { Controller, Get, Req } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { DbSeedService } from './db-seed.service';
 
 @Controller('seed')
@@ -16,7 +16,7 @@ export class DbSeedController {
   }
 
   @Get('generate-recipes')
-  async generateRecipes(@Req() request: any) {
-    return await this.dbSeedService.generateRecipes(request);
+  async generateRecipes() {
+    return await this.dbSeedService.generateRecipes();
   }
 }

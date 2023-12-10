@@ -10,6 +10,9 @@ import { RecipesQueries } from './queries/queries';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
 import { UsersService } from '../users/users.service';
+import { HttpService } from '@nestjs/axios';
+import { AxiosError } from 'axios';
+import { catchError, firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class RecipesService {
@@ -24,6 +27,8 @@ export class RecipesService {
     private readonly usersService: UsersService,
     @Inject(PaginationService)
     private readonly paginationService: PaginationService,
+
+    private readonly httpService: HttpService,
   ) {}
 
   async findAll(queries: RecipesQueries) {
@@ -31,7 +36,7 @@ export class RecipesService {
       per_page = 10,
       page = 1,
       search,
-      sort_by = 'created_at',
+      sort_by = 'createdAt',
       sort_order = 'DESC',
     } = queries;
 
@@ -66,7 +71,7 @@ export class RecipesService {
     const {
       per_page = 10,
       page = 1,
-      sort_by = 'created_at',
+      sort_by = 'createdAt',
       sort_order = 'DESC',
     } = queries;
     const { ingredients } = body;
@@ -112,7 +117,7 @@ export class RecipesService {
     });
   }
 
-  async create(request: any, body: RecipeCreateDTO) {
+  async create(body: RecipeCreateDTO) {
     const {
       title,
       difficulty,
@@ -125,9 +130,21 @@ export class RecipesService {
       type,
     } = body;
 
-    const { user: userFromRequest } = request;
+    const { data: user } = await firstValueFrom(
+      this.httpService
+        // change any by response type
+        .get<any>('http://localhost:8000/api/v1/users/current', {
+          headers: { Authorization: `Bearer ${}` },
+        })
+        .pipe(
+          catchError((error: AxiosError) => {
+            console.error(error);
+            throw 'An error happened!';
+          }),
+        ),
+    );
 
-    const user = await this.usersService.findOneByEmail(userFromRequest.email);
+    console.log(user);
 
     if (!user) {
       throw new NotFoundException("L'utilisateur n'existe pas.");

@@ -92,7 +92,7 @@ export class DbSeedService {
     }
   }
 
-  async generateRecipes(request: any) {
+  async generateRecipes() {
     let generatedCount = 0;
     let status: string;
     for (const recipe of recipesSeed) {
@@ -104,7 +104,7 @@ export class DbSeedService {
         if (recipeExists) {
           continue;
         }
-        await this.recipesService.create(request, recipe);
+        await this.recipesService.create(recipe);
         generatedCount++;
       } catch (error) {
         status = 'error';

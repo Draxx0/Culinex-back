@@ -8,6 +8,7 @@ import {
   ManyToOne,
 } from 'typeorm';
 import { IngredientCategoryEntity } from 'src/models/ingredients-category/entities/ingredients-category.entity';
+import { IngredientUnit } from '../types/ingredients';
 
 @Entity('ingredient')
 export class IngredientEntity extends TimestampEntity {
@@ -19,6 +20,12 @@ export class IngredientEntity extends TimestampEntity {
 
   @Column({ nullable: true })
   image_url: string;
+
+  @Column({
+    type: 'text',
+    enum: ['grammes', 'litres', 'cl', 'c. à soupe', 'c. à café', 'unité'],
+  })
+  unit: IngredientUnit[];
 
   @ManyToMany(() => RecipeEntity, (recipe) => recipe.ingredients)
   recipes: RecipeEntity[];

@@ -5,6 +5,13 @@ export const recipesSeed: Array<Recipe> = [
     title: 'Poulet au curry',
     description: 'Un délicieux poulet au curry',
     difficulty: 'Facile',
+    cost: 'Abordable',
+    global_note: 0,
+    time: {
+      preparation: 10,
+      cooking: 30,
+      rest: null,
+    },
     type: 'Plat',
     instructions: [
       'Faire revenir le poulet dans une poêle',

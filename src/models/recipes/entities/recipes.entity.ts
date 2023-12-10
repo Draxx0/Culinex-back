@@ -10,7 +10,12 @@ import {
   OneToMany,
   ManyToOne,
 } from 'typeorm';
-import { RecipeType } from '../types/recipes';
+import {
+  RecipeCost,
+  RecipeDifficulty,
+  RecipeTime,
+  RecipeType,
+} from '../types/recipes';
 import { UserEntity } from 'src/models/users/entities/users.entity';
 
 @Entity('recipe')
@@ -30,13 +35,29 @@ export class RecipeEntity extends TimestampEntity {
     type: 'text',
     enum: ['Facile', 'Moyen', 'Difficile'],
   })
-  difficulty: 'Facile' | 'Moyen' | 'Difficile';
+  difficulty: RecipeDifficulty;
 
   @Column({
     type: 'text',
     enum: ['Apéritif', 'Entrée', 'Plat', 'Dessert', 'Boisson', 'Autre'],
   })
   type: RecipeType;
+
+  @Column({ default: null, type: 'int', nullable: true })
+  global_note: number | null;
+
+  @Column({
+    type: 'jsonb',
+    nullable: true,
+    default: { preparation: 0, cooking: 0, rest: 0, total: 0 },
+  })
+  time: RecipeTime;
+
+  @Column({
+    type: 'text',
+    enum: ['Abordable', 'Modéré', 'Gourmet'],
+  })
+  cost: RecipeCost;
 
   @Column({
     type: 'text',

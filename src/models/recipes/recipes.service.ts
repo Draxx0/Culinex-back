@@ -120,6 +120,8 @@ export class RecipesService {
       details,
       instructions,
       description,
+      cost,
+      time,
       type,
     } = body;
 
@@ -131,12 +133,20 @@ export class RecipesService {
       throw new NotFoundException("L'utilisateur n'existe pas.");
     }
 
+    const totalPreparationTime =
+      time.preparation + time.cooking + (time.rest || 0);
+
     const recipe = this.recipeRepository.create({
       title,
       difficulty,
       description,
       type,
       instructions,
+      cost,
+      time: {
+        ...time,
+        total: totalPreparationTime,
+      },
       userId: user.id,
       user,
     });

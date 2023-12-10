@@ -7,7 +7,6 @@ import { PaginationModule } from './models/common/models/pagination/pagination.m
 import { IngredientsDetailsModule } from './models/ingredient-details/ingredients-details.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { PostgresModule } from './database/postgres.module';
-import { DbSeedModule } from './models/db-seed/db-seed.module';
 import { IngredientsCategoryModule } from './models/ingredients-category/ingredients-category.module';
 import { RedisModule } from './cache/redis/redis.module';
 
@@ -21,7 +20,6 @@ import { RedisModule } from './cache/redis/redis.module';
     PaginationModule,
     AuthenticationModule,
     RedisModule,
-    process.env.NODE_ENV === 'development' && DbSeedModule,
   ],
   controllers: [AppController],
   providers: [AppService],

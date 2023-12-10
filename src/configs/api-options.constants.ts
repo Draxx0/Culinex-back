@@ -6,6 +6,7 @@ export const RedisOptions: CacheModuleAsyncOptions = {
   isGlobal: true,
   imports: [ConfigModule],
   useFactory: async (configService: ConfigService) => {
+    console.log(configService.get<string>('NODE_ENV'));
     const store = await redisStore({
       socket: {
         host: configService.get<string>('REDIS_HOST'),

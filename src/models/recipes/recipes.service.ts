@@ -134,7 +134,7 @@ export class RecipesService {
       this.httpService
         // change any by response type
         .get<any>('http://localhost:8000/api/v1/users/current', {
-          headers: { Authorization: `Bearer ${}` },
+          headers: { Authorization: `Bearer ${'toto'}` },
         })
         .pipe(
           catchError((error: AxiosError) => {

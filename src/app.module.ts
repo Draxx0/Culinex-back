@@ -9,6 +9,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { PostgresModule } from './database/postgres.module';
 import { DbSeedModule } from './models/db-seed/db-seed.module';
 import { IngredientsCategoryModule } from './models/ingredients-category/ingredients-category.module';
+import { RedisModule } from './cache/redis/redis.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { IngredientsCategoryModule } from './models/ingredients-category/ingredi
     IngredientsCategoryModule,
     PaginationModule,
     AuthenticationModule,
+    RedisModule,
     process.env.NODE_ENV === 'development' && DbSeedModule,
   ],
   controllers: [AppController],

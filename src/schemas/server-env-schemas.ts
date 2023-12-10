@@ -8,6 +8,8 @@ const envSchema = z.object({
   POSTGRES_DATABASE: z.string().trim().min(1),
   JWT_SECRET: z.string().trim().min(1),
   PORT: z.string().trim().min(1),
+  REDIS_HOST: z.string().trim().min(1),
+  REDIS_PORT: z.string().trim().min(1),
   NODE_ENV: z.enum(['development', 'production']).default('development'),
 });
 
@@ -19,6 +21,8 @@ export const validateEnvVariables = ({
   POSTGRES_DATABASE,
   JWT_SECRET,
   PORT,
+  REDIS_HOST,
+  REDIS_PORT,
   NODE_ENV,
 }) => {
   const envServer = envSchema.safeParse({
@@ -29,6 +33,8 @@ export const validateEnvVariables = ({
     POSTGRES_DATABASE,
     JWT_SECRET,
     PORT,
+    REDIS_HOST,
+    REDIS_PORT,
     NODE_ENV,
   });
 

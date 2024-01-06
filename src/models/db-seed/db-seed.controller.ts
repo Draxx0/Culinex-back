@@ -1,7 +1,9 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { DbSeedService } from './db-seed.service';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('seed')
+@UseGuards(AuthGuard)
 export class DbSeedController {
   constructor(private readonly dbSeedService: DbSeedService) {}
 
@@ -16,7 +18,7 @@ export class DbSeedController {
   }
 
   @Get('generate-recipes')
-  async generateRecipes() {
-    return await this.dbSeedService.generateRecipes();
+  async generateRecipes(@Request() req) {
+    return await this.dbSeedService.generateRecipes(req.user.id);
   }
 }

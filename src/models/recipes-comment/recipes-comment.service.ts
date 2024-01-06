@@ -1,22 +1,49 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RecipesCommentEntity } from './entities/recipes-comment.entity';
 import { Repository } from 'typeorm';
 import { RecipesCommentCreateDTO } from './dto/recipes-comment.create.dto';
+import { RecipesService } from '../recipes/recipes.service';
+import { AppReturnObject } from 'src/common/types';
 
 @Injectable()
 export class RecipesCommentService {
   constructor(
     @InjectRepository(RecipesCommentEntity)
     private readonly recipeCommentRepository: Repository<RecipesCommentEntity>,
+    @Inject(RecipesService)
+    private readonly recipeService: RecipesService,
   ) {}
 
-  async create(id: string, body: RecipesCommentCreateDTO) {
+  async create(
+    recipeId: string,
+    body: RecipesCommentCreateDTO,
+  ): Promise<AppReturnObject<RecipesCommentEntity>> {
+    const recipe = await this.recipeService.findOne(recipeId);
+
+    if (!recipe) {
+      throw new Error('Recipe not found');
+    }
+
     const newComment = await this.recipeCommentRepository.create({
       ...body,
-      recipeId: id,
+      recipe,
     });
 
+    console.log(newComment);
+
     await this.recipeCommentRepository.save(newComment);
+
+    await this.recipeService.updateGlobalNote(recipeId);
+
+    return {
+      status: 201,
+      message: 'Comment created',
+      data: newComment,
+    };
+  }
+
+  async deleteAll() {
+    return await this.recipeCommentRepository.delete({});
   }
 }

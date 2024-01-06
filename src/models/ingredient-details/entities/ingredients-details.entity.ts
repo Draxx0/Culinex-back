@@ -16,6 +16,8 @@ export class IngredientsDetailEntity extends TimestampEntity {
   @Column()
   recipeId: string;
 
-  @ManyToOne(() => RecipeEntity, (recipe) => recipe.ingredientsDetails)
+  @ManyToOne(() => RecipeEntity, (recipe) => recipe.ingredientsDetails, {
+    onDelete: 'CASCADE',
+  })
   recipe: RecipeEntity;
 }

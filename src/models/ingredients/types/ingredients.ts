@@ -15,3 +15,14 @@ export type IngredientUnit =
   | 'c. à soupe'
   | 'c. à café'
   | 'unité';
+
+export enum IngredientUnitEnum {
+  'grammes' = 'grammes',
+  'pincée' = 'pincée',
+  'gousse' = 'gousse',
+  'litres' = 'litres',
+  'cl' = 'cl',
+  'c. à soupe' = 'c. à soupe',
+  'c. à café' = 'c. à café',
+  'unité' = 'unité',
+}

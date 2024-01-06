@@ -48,4 +48,8 @@ export class RecipeCreateDTO {
     ingredientName: string;
     quantity: string;
   }[];
+
+  @IsString()
+  @IsNotEmpty()
+  userId: string;
 }

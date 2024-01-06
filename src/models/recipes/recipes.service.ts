@@ -1,18 +1,15 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RecipeEntity } from './entities/recipes.entity';
 import { In, Repository } from 'typeorm';
-import { RecipeCreateDTO } from './dto/recipe.create.dto';
-import { RecipeUpdateDTO } from './dto/recipe.update.dto';
-import { IngredientEntity } from '../ingredients/entities/ingredients.entity';
 import { PaginationService } from '../common/models/pagination/pagination.service';
-import { RecipesQueries } from './queries/queries';
-import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { IngredientsDetailEntity } from '../ingredient-details/entities/ingredients-details.entity';
+import { IngredientEntity } from '../ingredients/entities/ingredients.entity';
 import { UsersService } from '../users/users.service';
-import { HttpService } from '@nestjs/axios';
-import { AxiosError } from 'axios';
-import { catchError, firstValueFrom } from 'rxjs';
+import { RecipeCreateDTO } from './dto/recipe.create.dto';
+import { GetRecipesDTO } from './dto/recipe.get.dto';
+import { RecipeUpdateDTO } from './dto/recipe.update.dto';
+import { RecipeEntity } from './entities/recipes.entity';
+import { RecipesQueries } from './queries/queries';
 
 @Injectable()
 export class RecipesService {
@@ -27,8 +24,6 @@ export class RecipesService {
     private readonly usersService: UsersService,
     @Inject(PaginationService)
     private readonly paginationService: PaginationService,
-
-    private readonly httpService: HttpService,
   ) {}
 
   async findAll(queries: RecipesQueries) {
@@ -54,6 +49,7 @@ export class RecipesService {
     const [recipes, total] = await query
       .leftJoinAndSelect('recipe.ingredients', 'ingredient')
       .leftJoinAndSelect('recipe.ingredientsDetails', 'ingredientsDetails')
+      .leftJoinAndSelect('recipe.comments', 'comments')
       .orderBy(`recipe.${sort_by}`, sort_order)
       .skip((page - 1) * per_page)
       .take(per_page)
@@ -130,21 +126,7 @@ export class RecipesService {
       type,
     } = body;
 
-    const { data: user } = await firstValueFrom(
-      this.httpService
-        // change any by response type
-        .get<any>('http://localhost:8000/api/v1/users/current', {
-          headers: { Authorization: `Bearer ${'toto'}` },
-        })
-        .pipe(
-          catchError((error: AxiosError) => {
-            console.error(error);
-            throw 'An error happened!';
-          }),
-        ),
-    );
-
-    console.log(user);
+    const user = await this.usersService.findOne(body.userId);
 
     if (!user) {
       throw new NotFoundException("L'utilisateur n'existe pas.");
@@ -212,6 +194,20 @@ export class RecipesService {
     return await this.recipeRepository.save({
       ...ingredient,
       ...body,
+    });
+  }
+
+  async updateGlobalNote(id: string) {
+    const recipe = await this.findOne(id);
+
+    const comments = recipe.comments;
+
+    const globalNote =
+      comments.reduce((acc, comment) => acc + comment.note, 0) /
+      comments.length;
+
+    return await this.recipeRepository.update(id, {
+      global_note: globalNote,
     });
   }
 

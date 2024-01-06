@@ -24,9 +24,7 @@ export class RecipeEntity extends TimestampEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   title: string;
 
   @Column()
@@ -44,7 +42,7 @@ export class RecipeEntity extends TimestampEntity {
   })
   type: RecipeType;
 
-  @Column({ default: null, type: 'int', nullable: true })
+  @Column({ default: null, type: 'decimal', nullable: true })
   global_note: number | null;
 
   @Column({
@@ -81,7 +79,7 @@ export class RecipeEntity extends TimestampEntity {
   @JoinTable()
   ingredients: IngredientEntity[];
 
-  @ManyToOne(() => RecipesCommentEntity, (comment) => comment.recipe, {
+  @OneToMany(() => RecipesCommentEntity, (comment) => comment.recipe, {
     eager: true,
   })
   comments: RecipesCommentEntity[];

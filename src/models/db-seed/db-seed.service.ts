@@ -5,6 +5,7 @@ import { ingredientsSeed } from './data/ingredients.seed';
 import { IngredientsCategoryService } from '../ingredients-category/ingredients-category.service';
 import { categoriesSeed } from './data/categories.seed';
 import { recipesSeed } from './data/recipes.seed';
+import { Recipe } from '../recipes/types/recipes';
 
 @Injectable()
 export class DbSeedService {
@@ -92,7 +93,10 @@ export class DbSeedService {
     }
   }
 
-  async generateRecipes() {
+  async generateRecipes(userId: string) {
+    console.log('USER ID :', userId);
+    type RecipeWithUserId = Recipe & { userId: string };
+
     let generatedCount = 0;
     let status: string;
     for (const recipe of recipesSeed) {
@@ -100,11 +104,17 @@ export class DbSeedService {
         const recipeExists = await this.recipesService.findOneByTitle(
           recipe.title,
         );
-        console.log('recipeExists', recipeExists);
+
         if (recipeExists) {
           continue;
         }
-        await this.recipesService.create(recipe);
+
+        const recipeWithUserId: RecipeWithUserId = {
+          ...recipe,
+          userId,
+        };
+
+        await this.recipesService.create(recipeWithUserId);
         generatedCount++;
       } catch (error) {
         status = 'error';

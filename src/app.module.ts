@@ -8,6 +8,8 @@ import { IngredientsDetailsModule } from './models/ingredient-details/ingredient
 import { AuthenticationModule } from './authentication/authentication.module';
 import { PostgresModule } from './database/postgres.module';
 import { IngredientsCategoryModule } from './models/ingredients-category/ingredients-category.module';
+import { DbSeedModule } from './models/db-seed/db-seed.module';
+import { RecipesCommentModule } from './models/recipes-comment/recipes-comment.module';
 // import { RedisModule } from './cache/redis/redis.module';
 
 @Module({
@@ -19,6 +21,8 @@ import { IngredientsCategoryModule } from './models/ingredients-category/ingredi
     IngredientsCategoryModule,
     PaginationModule,
     AuthenticationModule,
+    RecipesCommentModule,
+    process.env.NODE_ENV === 'development' && DbSeedModule,
     // RedisModule,
   ],
   controllers: [AppController],

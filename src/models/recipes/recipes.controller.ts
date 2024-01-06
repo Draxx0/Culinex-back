@@ -19,16 +19,11 @@ import { RecipesQueries } from './queries/queries';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
 import { RecipeCreateDTO } from './dto/recipe.create.dto';
 import { RecipeUpdateDTO } from './dto/recipe.update.dto';
-import { RecipesCommentService } from '../recipes-comment/recipes-comment.service';
-import { RecipesCommentCreateDTO } from '../recipes-comment/dto/recipes-comment.create.dto';
 
 @Controller('recipes')
 @UseGuards(AuthGuard, RolesGuard, AuthorGuard)
 export class RecipesController {
-  constructor(
-    private readonly recipesService: RecipesService,
-    private readonly recipesCommentService: RecipesCommentService,
-  ) {}
+  constructor(private readonly recipesService: RecipesService) {}
 
   //===========================RECIPES===========================
   @Get()
@@ -73,15 +68,5 @@ export class RecipesController {
   @Roles([Role.ADMIN])
   async deleteAll() {
     return await this.recipesService.deleteAll();
-  }
-
-  //===========================COMMENTS===========================
-
-  @Post(':id/comments')
-  async createComment(
-    @Param('id') id: string,
-    @Body() body: RecipesCommentCreateDTO,
-  ) {
-    return await this.recipesCommentService.create(id, body);
   }
 }

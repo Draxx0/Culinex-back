@@ -1,5 +1,5 @@
 import { TimestampEntity } from 'src/models/common/entities/timestamp.entity';
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { RecipeCommentNote } from '../types/recipes-comment';
 import { RecipeEntity } from 'src/models/recipes/entities/recipes.entity';
 
@@ -17,9 +17,8 @@ export class RecipesCommentEntity extends TimestampEntity {
   })
   note: RecipeCommentNote;
 
-  @Column()
-  recipeId: string;
-
-  @OneToMany(() => RecipeEntity, (recipe) => recipe.comments)
+  @ManyToOne(() => RecipeEntity, (recipe) => recipe.comments, {
+    onDelete: 'CASCADE',
+  })
   recipe: RecipeEntity;
 }

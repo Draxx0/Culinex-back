@@ -7,6 +7,6 @@ export const configuration = () => ({
   POSTGRES_USERNAME: process.env.POSTGRES_USERNAME,
   POSTGRES_PASSWORD: process.env.POSTGRES_PASSWORD,
   POSTGRES_DATABASE: process.env.POSTGRES_DATABASE,
-  REDIS_HOST: process.env.REDIS_HOST,
-  REDIS_PORT: parseInt(process.env.REDIS_PORT, 10) || 6379,
+  // REDIS_HOST: process.env.REDIS_HOST,
+  // REDIS_PORT: parseInt(process.env.REDIS_PORT, 10) || 6379,
 });

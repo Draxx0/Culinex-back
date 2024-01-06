@@ -8,7 +8,7 @@ import { IngredientsDetailsModule } from './models/ingredient-details/ingredient
 import { AuthenticationModule } from './authentication/authentication.module';
 import { PostgresModule } from './database/postgres.module';
 import { IngredientsCategoryModule } from './models/ingredients-category/ingredients-category.module';
-import { RedisModule } from './cache/redis/redis.module';
+// import { RedisModule } from './cache/redis/redis.module';
 
 @Module({
   imports: [
@@ -19,7 +19,7 @@ import { RedisModule } from './cache/redis/redis.module';
     IngredientsCategoryModule,
     PaginationModule,
     AuthenticationModule,
-    RedisModule,
+    // RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

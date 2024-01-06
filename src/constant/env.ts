@@ -7,4 +7,6 @@ export const envs = {
   JWT_SECRET: process.env.JWT_SECRET,
   PORT: process.env.PORT,
   NODE_ENV: process.env.NODE_ENV,
+  // REDIS_HOST: process.env.REDIS_HOST,
+  // REDIS_PORT: process.env.REDIS_PORT,
 } as const;

@@ -1,7 +1,9 @@
 import { Controller, Get, Request, UseGuards } from '@nestjs/common';
 import { DbSeedService } from './db-seed.service';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { SkipThrottle } from '@nestjs/throttler';
 
+@SkipThrottle()
 @Controller('seed')
 @UseGuards(AuthGuard)
 export class DbSeedController {

@@ -4,7 +4,7 @@ import { RecipesCommentEntity } from './entities/recipes-comment.entity';
 import { Repository } from 'typeorm';
 import { RecipesCommentCreateDTO } from './dto/recipes-comment.create.dto';
 import { RecipesService } from '../recipes/recipes.service';
-import { AppReturnObject } from 'src/common/types';
+import { ApiCommonResponse } from 'src/common/types';
 
 @Injectable()
 export class RecipesCommentService {
@@ -18,7 +18,7 @@ export class RecipesCommentService {
   async create(
     recipeId: string,
     body: RecipesCommentCreateDTO,
-  ): Promise<AppReturnObject<RecipesCommentEntity>> {
+  ): Promise<ApiCommonResponse<RecipesCommentEntity>> {
     const recipe = await this.recipeService.findOne(recipeId);
 
     if (!recipe) {

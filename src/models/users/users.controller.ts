@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthenticationService } from 'src/authentication/authentication.service';
 import { TokenObject } from 'src/authentication/types/authentication';
-import { AppReturnObject } from 'src/common/types';
+import { ApiCommonResponse } from 'src/common/types';
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -71,7 +71,7 @@ export class UsersController {
   async updateUserRole(
     @Param('id') id: string,
     @Body() body: { role: Role },
-  ): Promise<AppReturnObject> {
+  ): Promise<ApiCommonResponse> {
     return await this.userService.updateUserRole(id, body.role);
   }
 }

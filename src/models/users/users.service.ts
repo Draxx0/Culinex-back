@@ -4,7 +4,7 @@ import { UserEntity } from './entities/users.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcryptjs';
 import { UpdateUserDTO } from './dto/user.update.dto';
-import { AppReturnObject } from 'src/common/types';
+import { ApiCommonResponse } from 'src/common/types';
 import { Role } from 'src/decorator/role.decorator';
 
 @Injectable()
@@ -59,7 +59,7 @@ export class UsersService {
     }
   }
 
-  async updateUserRole(id: string, role: Role): Promise<AppReturnObject> {
+  async updateUserRole(id: string, role: Role): Promise<ApiCommonResponse> {
     try {
       await this.userRepository.update(id, { role });
 

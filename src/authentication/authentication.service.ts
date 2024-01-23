@@ -32,12 +32,14 @@ export class AuthenticationService {
       throw new UnauthorizedException();
     }
 
+    const { email: userEmail, id, role, username } = user;
+
     const payload = {
-      username: user.username,
+      username,
       sub: user.id,
-      email: user.email,
-      id: user.id,
-      role: user.role,
+      email: userEmail,
+      id,
+      role,
     };
 
     return {

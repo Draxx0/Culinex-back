@@ -18,11 +18,9 @@ import { DeleteResult } from 'typeorm';
 import { UserEntity } from './entities/users.entity';
 import { UsersService } from './users.service';
 import { SignupDTO } from 'src/authentication/dto/auth.dto';
-import { AuthorGuard } from 'src/guards/author.guard';
-import { Author, AuthorBy } from 'src/decorator/author.decorator';
 
 @Controller('users')
-@UseGuards(AuthGuard, RolesGuard, AuthorGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class UsersController {
   constructor(
     private readonly userService: UsersService,
@@ -41,19 +39,16 @@ export class UsersController {
   }
 
   @Get(':id')
-  @Author(AuthorBy.USER_ID)
   async getUser(@Param('id') id: string): Promise<UserEntity> {
     return await this.userService.findOne(id);
   }
 
   @Delete(':id')
-  @Author(AuthorBy.USER_ID)
   deleteOrder(@Param('id') id: string): Promise<DeleteResult> {
     return this.userService.deleteUser(id);
   }
 
   @Put(':id')
-  @Author(AuthorBy.USER_ID)
   async updateUser(
     @Param('id') id: string,
     @Body() body: SignupDTO,

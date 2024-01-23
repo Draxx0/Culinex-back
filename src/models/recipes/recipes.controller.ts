@@ -12,8 +12,6 @@ import {
 import { Role, Roles } from 'src/decorator/role.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
-import { AuthorGuard } from 'src/guards/author.guard';
-import { Author, AuthorBy } from 'src/decorator/author.decorator';
 import { RecipesService } from './recipes.service';
 import { RecipesQueries } from './queries/queries';
 import { GetRecipesDTO } from './dto/recipe.get.dto';
@@ -21,7 +19,7 @@ import { RecipeCreateDTO } from './dto/recipe.create.dto';
 import { RecipeUpdateDTO } from './dto/recipe.update.dto';
 
 @Controller('recipes')
-@UseGuards(AuthGuard, RolesGuard, AuthorGuard)
+@UseGuards(AuthGuard, RolesGuard)
 export class RecipesController {
   constructor(private readonly recipesService: RecipesService) {}
 
@@ -52,14 +50,12 @@ export class RecipesController {
 
   @Put(':id')
   @Roles([Role.ADMIN, Role.CONTRIBUTOR])
-  @Author(AuthorBy.RECIPE)
   async update(@Param('id') id: string, @Body() body: RecipeUpdateDTO) {
     return await this.recipesService.update(id, body);
   }
 
   @Delete(':id')
   @Roles([Role.ADMIN, Role.CONTRIBUTOR])
-  @Author(AuthorBy.RECIPE)
   async delete(@Param('id') id: string) {
     return await this.recipesService.delete(id);
   }
